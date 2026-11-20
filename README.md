@@ -97,3 +97,20 @@ Most of what goes wrong with AI agents comes from having too many moving
 parts with no clear shape. Here, every piece of work is a node that does
 one job, and the flow is the only thing deciding what happens next. When
 something isn't working, you know exactly where to look.
+
+## How to build with kitchen ?
+
+### with Claude code :- 
+
+Add the .agent to your claude Skills and just start prompting :- 
+
+```
+Claude cook with kitchen [your requirement]
+```
+
+plan the capabilities of your agent and the skills that you wish to see in your in agent
+and prepare a clean design doc for before using "kitchen" to cook your agents..
+
+### with Antigravity , Cursor and any others :- 
+
+Just start prompting with the design doc being clear and ready 
