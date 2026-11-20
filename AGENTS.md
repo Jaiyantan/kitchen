@@ -20,3 +20,7 @@ ln -s ../../.agents/skills/kitchen .claude/skills/kitchen
 - `kitchen.py` is the entire framework, no dependencies.
 - Run `python test_kitchen.py` before and after any change to `kitchen.py` - it has no test runner dependency either.
 - Before trusting a graph you wired, run `Flow(start).validate()` and `Flow(start).to_mermaid()` - see `.agents/skills/kitchen/SKILL.md`.
+
+## For developers using this repo
+
+To build a new agent, say: **"cook with kitchen: `<goal>`, tools are `<what it can call>`, done when `<what counts as finished>`"**. The skill knows what to do with that phrase - it runs the full build procedure itself, with two checkpoints before it writes real logic or makes a real call. You don't need to write out the development flow by hand.

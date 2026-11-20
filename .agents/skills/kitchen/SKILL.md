@@ -1,6 +1,6 @@
 ---
 name: kitchen
-description: Use when building, wiring, testing or debugging an AI agent or workflow with the kitchen framework (Node, Flow, shared state, async/batch variants). Load this before writing the first node of a new agent, and before touching an existing kitchen graph.
+description: Use when building, wiring, testing or debugging an AI agent or workflow with the kitchen framework (Node, Flow, shared state, async/batch variants). Also use whenever the person says "cook with kitchen" (or "let's cook", "cook up <goal>") - that phrase means run the full procedure in "the trigger phrase" section below. Load this before writing the first node of a new agent, and before touching an existing kitchen graph.
 ---
 
 # kitchen
@@ -12,6 +12,18 @@ kitchen models an agent as a graph. Three parts, nothing else:
 - **shared** - one plain dict every node reads from and writes to. Nothing passes directly between nodes; it all goes through this dict.
 
 An agent and a plain pipeline are the same graph. The only difference is whether `post()` computes its label from a fixed rule (pipeline) or from a judgment call over `shared` (agent, e.g. a tool-choice decided by an LLM call inside `exec()`).
+
+## The trigger phrase: "cook with kitchen"
+
+When the person says "cook with kitchen", "let's cook", or "cook up <something>", treat it as shorthand for the whole procedure below, not just a request to write some nodes. Do this, in order, without being asked again:
+
+1. **Get the goal, tools, and done-condition in one exchange.** If the message after the trigger phrase already states what the agent should do, what it can call, and what "finished" means, extract those three from it. If any of the three is missing, ask for exactly that and stop - don't guess a tool list or a success condition.
+2. **Write the shared-state schema and the node list, then stop and show them.** Follow `references/development-flow.md` steps 1 and 2. Present both as short lists, not prose. Wait for a go-ahead before writing a single class - unless the person's message included "no checkpoints" or "don't stop", in which case proceed straight through and just narrate each step as you do it.
+3. **Write every node with `exec` stubbed, wire the graph, then stop and show `flow.validate()` and `flow.to_mermaid()`.** This is `references/development-flow.md` steps 3-4. Again, wait for a go-ahead unless checkpoints were waived.
+4. **Replace stubs with real logic one node at a time** (step 6), add retries/fallback deliberately (step 7), add concurrency only once the serial version is proven correct (step 8).
+5. **Finish by re-running `validate()` and regenerating the diagram** (step 10), and say in one or two sentences what was built and where the diagram is.
+
+The two checkpoints (after step 2, after step 4) are the point of the trigger phrase - they're what stop a wrong graph from turning into three debugged-the-hard-way LLM calls. Don't skip them silently just because the request sounded simple.
 
 ## Route by task
 
